@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  apache-atlas:
+    image: sburn/apache-atlas:latest
+    container_name: apache-atlas
+    ports:
+      - "21000:21000"
+    environment:
+      - JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+    volumes:
+      - atlas-data:/apache-atlas/data
+      - ./atlas-startup.sh:/atlas-startup.sh
+    entrypoint: ["/bin/bash", "/atlas-startup.sh"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:21000"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+
+volumes:
+  atlas-data:
