@@ -90,6 +90,7 @@ x-airflow-common:
 services:
   postgres:
     image: postgres:16
+    container_name: airflow-postgres
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
@@ -107,6 +108,7 @@ services:
     # Redis is limited to 7.2-bookworm due to licencing change
     # https://redis.io/blog/redis-adopts-dual-source-available-licensing/
     image: redis:7.2-bookworm
+    container_name: airflow-Redis
     expose:
       - 6379
     healthcheck:
