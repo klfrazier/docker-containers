@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  postgres_db:
+    image: postgres:latest # Use a specific, stable version of postgres
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: public
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persist data in a Docker volume
+    networks:
+      - pg_network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: postgres-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: kevin.frazier@outlook.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin
+    ports:
+      - "8080:80" # Map host port 8080 to container port 80
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - pg_network
+    depends_on:
+      - postgres_db
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
+networks:
+  pg_network:
+    driver: bridge
